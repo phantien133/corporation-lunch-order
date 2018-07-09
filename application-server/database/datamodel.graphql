@@ -1,0 +1,53 @@
+type User {
+  id: ID! @unique
+  username: String! @unique
+  name: String
+  password: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Dish {
+  id: ID! @unique
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  menuDishes: [MenuDish!]! @relation(name: "DishToMenuDish")
+  type: String!
+}
+
+type MenuDish {
+  id: ID! @unique
+  dish: Dish! @relation(name: "DishToMenuDish")
+  menu: Menu! @relation(name: "MenuToMenuDish")
+  group: String @default(value: "0")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Menu {
+  id: ID! @unique
+  name: String
+  menuDishes: [MenuDish!]! @relation(name: "MenuToMenuDish")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type DailyMenu {
+  id: ID! @unique
+  menu: Menu!
+  date: DateTime!
+  price: Float! @default(value: "25000")
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Order {
+  id: ID! @unique
+  user: User!
+  dailyMenu: DailyMenu!
+  isPaid: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
